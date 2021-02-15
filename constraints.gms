@@ -1,3 +1,5 @@
+* en_conv.fx(primary, "NH3", type, reg, t) = 0;
+
 *### SCENARIO CONSTRAINTS ###
 
 C_strg_agg.up =
