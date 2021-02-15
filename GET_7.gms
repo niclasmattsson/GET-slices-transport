@@ -120,10 +120,10 @@ trsp_demand_Q(trsp_mode, reg,t)..
     trsp_demand(trsp_mode, reg,t) =e= sum( (trsp_fuel, engine_type),
     trsp_energy(trsp_fuel, engine_type, trsp_mode,reg, t)*trsp_conv(trsp_fuel, engine_type, trsp_mode) );
 
-vehicle_lim_Q(trsp_fuel, non_phev, trsp_mode, reg,t)$ (not sameas(trsp_mode, "f_rail") and not sameas(trsp_mode, "p_rail")and not sameas(trsp_mode, "p_air_short")and not sameas(trsp_mode, "p_air_medium")and not sameas(trsp_mode, "p_air_long")and not sameas(trsp_mode, "f_air"))..
-    trsp_energy(trsp_fuel, non_phev, trsp_mode, reg,t) =l=
-        engines(trsp_fuel, non_phev, trsp_mode, reg, t)/num_veh(trsp_mode,reg, t)*
-        (trsp_demand(trsp_mode, reg,t))/(trsp_conv(trsp_fuel, non_phev, trsp_mode)+0.00001);
+vehicle_lim_Q(trsp_fuel, non_phev, car_truck_ships, reg,t)..
+    trsp_energy(trsp_fuel, non_phev, car_truck_ships, reg,t) =l=
+        engines(trsp_fuel, non_phev, car_truck_ships, reg, t)/num_veh(car_truck_ships,reg, t)*
+        (trsp_demand(car_truck_ships, reg,t))/(trsp_conv(trsp_fuel, non_phev, car_truck_ships)+0.00001);
 
 vehicle_lim_PHEV_Q(road_fuel_liquid,engine_type, car_or_truck, reg,t)..
     trsp_energy(road_fuel_liquid, "PHEV", car_or_truck, reg,t) =e=
@@ -377,12 +377,12 @@ eng_g_lim_Q2(trsp_fuel, engine_type,car_truck_ships,reg, t+1)..
          engines(trsp_fuel, engine_type, car_truck_ships,reg, t)/num_veh(car_truck_ships,reg,t)-marketshare_eng   ;
 $offtext
 
-eng_g_lim_Q4( engine_type,trsp_mode,reg, t+1)$ (not sameas(trsp_mode, "f_rail") and not sameas(trsp_mode, "p_rail")and not sameas(trsp_mode, "p_air_short")and not sameas(trsp_mode, "p_air_medium")and not sameas(trsp_mode, "p_air_long")and not sameas(trsp_mode, "f_air"))..
- sum (trsp_fuel, engines(trsp_fuel, engine_type, trsp_mode,reg, t+1))=L=
- sum(trsp_fuel, engines(trsp_fuel, engine_type, trsp_mode,reg, t))*(1+eng_g_lim)**t_step+init_eng;
+eng_g_lim_Q4(engine_type,car_truck_ships,reg, t+1)..
+ sum(trsp_fuel, engines(trsp_fuel, engine_type, car_truck_ships, reg, t+1)) =L=
+ sum(trsp_fuel, engines(trsp_fuel, engine_type, car_truck_ships, reg, t)) * (1+eng_g_lim)**t_step+init_eng;
 
-Q_car_balance(trsp_mode,reg,t)$ (not sameas(trsp_mode, "f_rail") and not sameas(trsp_mode, "p_rail")and not sameas(trsp_mode, "p_air_short")and not sameas(trsp_mode, "p_air_medium")and not sameas(trsp_mode, "p_air_long")and not sameas(trsp_mode, "f_air"))..
-     sum((engine_type,trsp_fuel),engines(trsp_fuel, engine_type, trsp_mode,reg, t))=l= num_veh(trsp_mode,reg,t)+0.1;
+Q_car_balance(car_truck_ships,reg,t)..
+     sum((engine_type,trsp_fuel), engines(trsp_fuel, engine_type, car_truck_ships, reg, t)) =l= num_veh(car_truck_ships,reg,t) + 0.1;
 
 cap_g_lim_Q(en_in, en_out, type,reg, t+1)..
     cap_invest(en_in, en_out, type,reg, t+1) =L=
