@@ -154,15 +154,19 @@ test_3(road_fuel, engine_type, car_truck_ships, t)= cost_eng(road_fuel, engine_t
 test_4(reg,t)=en_conv.l("H2","MeOH","0", reg, t)*emis_fact("MeOH")*(1-effic("H2","MeOH","0",reg,t));
 test_5(class,reg,slice,t)=H2_prod_class.l(class,reg,slice,t) ;
 *report_emis2(en_in, reg,t)= sum((type,en_out),en_conv.l(en_in,en_out, type,reg,t)*emis_fact(en_in));
-
-execute_unload "results.gdx" oils report_supply1 report_c report_capital report_engines report_ships report_invest report_elec_gen total_elec_gen elec_dem report_elec_use
+if (GET_7.modelstat = 1,
+    execute_unload "results.gdx" oils report_supply1 report_c report_capital report_engines report_ships report_invest report_elec_gen total_elec_gen elec_dem report_elec_use
         report_en_conv urban_heat elec h2 MeOH report_transport_energy  nuclear feed_stock non_solid_heat solid_heat rural_heat end_use_price  report_elec_gen_slice
         demand_out biomass h2_use prices ccs transp_energy emission transp_km report_export report_import report_tot_cost report_lfs report_slice_lng
         report_capital_region report_storage_transfers_2100 report_from_storage report_to_storage report_capital_class report_elec_solarwind report_elec_class_slice
         curtailment report_elec_gen_summedslices marginal_el_price report_H2_prod C_capt_air.L energy_deliv.l energy_prod.l MeOH_use
          test_1 test_2 test_3 test_4 test_5 lf_el2h2 MeOH2airfuel report_ship_emis
 
-execute 'gdxxrw.exe results.gdx @output_parameters.txt'
+    execute 'gdxxrw.exe results.gdx @output_parameters.txt'
+else
+    display "Not optimal, results.xlsx not updated.";
+);
+
 $ontext
 
 
