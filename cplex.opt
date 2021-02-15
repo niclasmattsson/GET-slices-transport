@@ -1,18 +1,21 @@
 lpmethod 4
-threads 4
-solutiontype 2
+threads 6
+*solutiontype 2
 
 epopt 1e-9
 eprhs 1e-9
-scaind 1
+*scaind 1
 parallelmode -1
-EpMrk 0.9
-NumericalEmphasis 1
+*EpMrk 0.9
+*NumericalEmphasis 1
+
+*aggind 10
+*aggind 10 caused unscaled infeasibilities at higher number of slices (previously)
+
+
 *dpriind 4
 *ppriind 1
 
-aggind 10
-*aggind 10 caused unscaled infeasibilities at higher number of slices (previously)
 *aggfill 7
 *barcrossalg 2
 

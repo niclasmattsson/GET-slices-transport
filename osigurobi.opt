@@ -1,7 +1,9 @@
+# Use method 1 (dual simplex) for quick infeasibility detection.
+# Use method 2 (barrier) for production runs.
 method 2
 threads 6
-#scaleflag 2
-#presolve 2
+scaleflag 2
+presolve 2
 #barorder 1
 #crossover 1
 #crossoverbasis 1

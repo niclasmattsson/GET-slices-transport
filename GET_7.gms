@@ -514,6 +514,7 @@ option solprint = off   ;
 $offlisting
 
 
+* option lp = osigurobi;
 option lp = cplex;
 GET_7.optfile = 1;
 solve GET_7 using LP minimizing tot_cost ;
