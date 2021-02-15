@@ -162,7 +162,7 @@ if (GET_7.modelstat = 1,
         curtailment report_elec_gen_summedslices marginal_el_price report_H2_prod C_capt_air.L energy_deliv.l energy_prod.l MeOH_use
          test_1 test_2 test_3 test_4 test_5 lf_el2h2 MeOH2airfuel report_ship_emis
 
-    execute 'gdxxrw.exe results.gdx @output_parameters.txt'
+    execute 'gdxxrw.exe results.gdx @output_parameters.txt';
 else
     display "Not optimal, results.xlsx not updated.";
 );
