@@ -159,8 +159,8 @@ CG_type (type) / cg, cg_dec /
 trsp_fuel (energy)              / elec, MeOH, biogas, ethanol, biodiesel, H2, petro, air_fuel , CH4, NH3/
 
 *new_trsp_fuel (trsp_fuel) / MeOH, biogas, ethanol, biodiesel, H2, CH4 /
-road_fuel(trsp_fuel)            / MeOH, biogas, ethanol, biodiesel, H2, CH4, petro,elec, NH3/
-road_fuel_liquid(road_fuel)    / MeOH, biogas, ethanol, biodiesel,  petro, H2, CH4 /
+road_fuel(trsp_fuel)           / MeOH, biogas, ethanol, biodiesel, H2, CH4, petro, elec, NH3/
+road_fuel_liquid(road_fuel)    / MeOH, biogas, ethanol, biodiesel, H2, CH4, petro, NH3 /
 
 
 engine_type   / 0, FC , hyb, BEV, PHEV/
