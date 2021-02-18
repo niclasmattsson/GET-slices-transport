@@ -195,6 +195,12 @@ vehicle_cost("p_air_long") = 774;
 vehicle_cost("f_air") = 127;
 vehicle_cost("f_rail") = 175;
 vehicle_cost("p_rail") = 774;
+*vehicle cost for cars in GUSD/ G road vehicles
+*17500000 USD/coast vessel   = 175 GUSD/10^4 coast vessels
+*127000000 USD/container vessel   = 127 GUSD/k container vessels
+*774000000 USD/container vessel   = 774 GUSD/10^4 ocean vessels
+
+*These costs seem low compared to bus and road ???
 
 t_tech_eng(road_fuel, engine_type, trsp_mode) = 40;
 cost_eng(road_fuel, engine_type, trsp_mode, t) =
@@ -343,3 +349,11 @@ $offlisting
 option lp = cplex;
 GET_7.optfile = 1;
 solve GET_7 using LP minimizing tot_cost ;
+
+parameter energy_use_per_vehicle(car_truck_ships, reg,t);
+energy_use_per_vehicle(car_truck_ships, reg,t) =
+    trsp_demand(car_truck_ships, reg,t) / num_veh(car_truck_ships,reg, t);
+display energy_use_per_vehicle;
+
+display cost_infra_mod;
+display cost_eng;
