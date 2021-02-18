@@ -2,8 +2,8 @@ lpmethod 4
 threads 6
 *solutiontype 2
 
-*datacheck 2
-*warninglimit 1000
+datacheck 2
+warninglimit 1000
 
 epopt 1e-9
 eprhs 1e-9

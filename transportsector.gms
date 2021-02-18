@@ -213,6 +213,7 @@ cost_infra_mod(trsp_fuel, car_truck_ships) = cost_infra(trsp_fuel, car_truck_shi
 
 positive variables
 
+trsp_useful_energy(trsp_fuel, engine_type, trsp_mode, reg, t)
 trsp_energy(trsp_fuel, engine_type, trsp_mode, reg,t) EJ fuel used in the transport sector
 engines(trsp_fuel, engine_type, trsp_mode, reg,t)
 
@@ -232,6 +233,7 @@ tot_cost
 
 equations
 
+useful_trsp_energy_Q(trsp_fuel, engine_type, trsp_mode, reg, t)
 trsp_demand_Q(trsp_mode, reg,t)
 vehicle_lim_Q(trsp_fuel, non_phev, car_truck_ships, reg, t)
 vehicle_lim_PHEV_Q(road_fuel_liquid, engine_type, car_or_truck,reg, t)
@@ -252,26 +254,30 @@ tot_cost_Q
 *          sum( (trsp_mode, engine_type), trsp_energy(trsp_fuel, engine_type, trsp_mode, reg,t) )=e=
 *          sum(type, en_conv(trsp_fuel, "trsp", type, reg,t)*effic(trsp_fuel, "trsp", type,reg,t));
 
+useful_trsp_energy_Q(trsp_fuel, engine_type, trsp_mode, reg, t)..
+    trsp_useful_energy(trsp_fuel, engine_type, trsp_mode, reg, t) =E=
+        trsp_energy(trsp_fuel, engine_type, trsp_mode, reg, t) *
+            trsp_conv(trsp_fuel, engine_type, trsp_mode);
+
 trsp_demand_Q(trsp_mode, reg,t)..
-    trsp_demand(trsp_mode, reg,t) =e= sum( (trsp_fuel, engine_type),
-    trsp_energy(trsp_fuel, engine_type, trsp_mode,reg, t)*trsp_conv(trsp_fuel, engine_type, trsp_mode) );
+    sum((trsp_fuel, engine_type),
+        trsp_useful_energy(trsp_fuel, engine_type, trsp_mode, reg, t)) =E=
+            trsp_demand(trsp_mode, reg, t);
 
-vehicle_lim_Q(trsp_fuel, non_phev, car_truck_ships, reg,t)..
-    trsp_energy(trsp_fuel, non_phev, car_truck_ships, reg,t) =l=
-        engines(trsp_fuel, non_phev, car_truck_ships, reg, t)/num_veh(car_truck_ships,reg, t)*
-        (trsp_demand(car_truck_ships, reg,t))/(trsp_conv(trsp_fuel, non_phev, car_truck_ships)+0.0001);
+vehicle_lim_Q(trsp_fuel, non_phev, car_truck_ships, reg, t)..
+    trsp_useful_energy(trsp_fuel, non_phev, car_truck_ships, reg,t) =l=
+    engines(trsp_fuel, non_phev, car_truck_ships, reg, t) *
+        trsp_demand(car_truck_ships, reg,t) / num_veh(car_truck_ships,reg, t);
 
-vehicle_lim_PHEV_Q(road_fuel_liquid,engine_type, car_or_truck, reg,t)..
-    trsp_energy(road_fuel_liquid, "PHEV", car_or_truck, reg,t) =e=
-        engines(road_fuel_liquid, "PHEV", car_or_truck, reg,t)/
-           num_veh(car_or_truck,reg, t)*(1-elec_frac_PHEV(car_or_truck))*
-              trsp_demand(car_or_truck,reg, t)/(trsp_conv(road_fuel_liquid, "PHEV", car_or_truck)+0.0001);
+vehicle_lim_PHEV_Q(road_fuel_liquid, engine_type, car_or_truck, reg, t)..
+    trsp_useful_energy(road_fuel_liquid, "PHEV", car_or_truck, reg, t) =e=
+    engines(road_fuel_liquid, "PHEV", car_or_truck, reg, t) * (1-elec_frac_PHEV(car_or_truck)) *
+        trsp_demand(car_or_truck,reg, t) / num_veh(car_or_truck,reg, t);
 
-elec_frac_PHEV_Q(car_or_truck,  engine_type,reg,t)..
-     sum(road_fuel_liquid, trsp_energy(road_fuel_liquid, "PHEV", car_or_truck,reg, t)*
-         trsp_conv (road_fuel_liquid, "PHEV", car_or_truck))/(1-elec_frac_PHEV(car_or_truck)) =e=
-            trsp_energy( "elec", "PHEV", car_or_truck,reg, t)*
-               trsp_conv ("elec", "PHEV", car_or_truck)/(elec_frac_PHEV(car_or_truck));
+elec_frac_PHEV_Q(car_or_truck, engine_type, reg, t)..
+    trsp_useful_energy("elec", "PHEV", car_or_truck, reg, t) =e=
+    elec_frac_PHEV(car_or_truck) *
+        sum(road_fuel, trsp_useful_energy(road_fuel, "PHEV", car_or_truck, reg, t));
 
 lim_elec_veh(car_or_truck,elec_veh,reg,t)..
          sum(trsp_fuel, engines(trsp_fuel, elec_veh, car_or_truck, reg,t))=l=
