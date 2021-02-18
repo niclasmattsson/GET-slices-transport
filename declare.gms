@@ -26,6 +26,7 @@ supply_sec(energy,reg,t)
 supply_sec2(en_in,energy,type,reg,t)
 
 trsp_energy(trsp_fuel, engine_type, trsp_mode, reg,t) EJ fuel used in the transport sector
+trsp_useful_energy(trsp_fuel, engine_type, trsp_mode, reg, t)
 engines(trsp_fuel, engine_type, trsp_mode, reg,t)
 *extra_ship_fuel(trsp_fuel, IC_FC, heavy_mode, reg,t)
 
@@ -187,6 +188,7 @@ elec_dec_Q(reg,t)
 
 
 transp_q(trsp_fuel,reg,t)
+useful_trsp_energy_Q(trsp_fuel, engine_type, trsp_mode, reg, t)
 
 Cal_CH4(reg)
 Cal_oil(reg)
