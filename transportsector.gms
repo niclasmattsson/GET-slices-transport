@@ -314,7 +314,8 @@ eng_g_lim_Q4( engine_type,car_truck_ships,reg, t+1)..
  sum(trsp_fuel, engines(trsp_fuel, engine_type, car_truck_ships,reg, t))*(1+eng_g_lim)**t_step+init_eng;
 
 Q_car_balance(car_truck_ships,reg,t)..
-     sum((engine_type,trsp_fuel),engines(trsp_fuel, engine_type, car_truck_ships,reg, t))=l= num_veh(car_truck_ships,reg,t)+0.1;
+*  1 =L= 1;
+  sum((engine_type,trsp_fuel),engines(trsp_fuel, engine_type, car_truck_ships,reg, t))=l= num_veh(car_truck_ships,reg,t)+0*0.1;
 
 shipping_emis(reg,t)..
 ship_emis(reg,t)=e=sum(engine_type, (sum((trsp_fuel, heavy_mode), trsp_energy(trsp_fuel, engine_type, heavy_mode, reg,t)
@@ -355,5 +356,16 @@ energy_use_per_vehicle(car_truck_ships, reg,t) =
     trsp_demand(car_truck_ships, reg,t) / num_veh(car_truck_ships,reg, t);
 display energy_use_per_vehicle;
 
-display cost_infra_mod;
-display cost_eng;
+parameter global_engines(trsp_mode, engine_type, trsp_fuel, t);
+global_engines(trsp_mode, engine_type, trsp_fuel, t) = 
+    sum(reg, engines.l(trsp_fuel, engine_type, trsp_mode, reg, t));
+display global_engines;
+
+parameter global_agg_engines(trsp_mode, t);
+global_agg_engines(trsp_mode, t) = sum((engine_type,trsp_fuel), global_engines(trsp_mode, engine_type, trsp_fuel, t));
+display global_agg_engines;
+
+parameter global_num_veh(car_truck_ships,t);
+global_num_veh(car_truck_ships,t) = sum(reg, num_veh(car_truck_ships,reg,t))
+display global_num_veh;
+display num_veh;
