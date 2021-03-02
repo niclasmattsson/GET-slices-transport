@@ -199,14 +199,14 @@ table    trsp_cal_road_2020(reg, trsp_fuel)
            CH4        petro        elec        MeOH
 AFR        0.02        4.24        0.00        0.02
 CPA        1.44        11.11        0.03        0.34
-EUR        0.11        12.57        0.01        0.04
+EUR        0.11        16        0.01        0.04
 FSU        0.04        4.18        0.00        0.63
 LAM        0.22        9.37        0.00        1.55
 MEA        0.29        6.83        0.00        0.00
-NAM        0.17        23.31        0.00        0.01
+NAM        0.17        26        0.00        0.01
 PAO        0.16        5.52        0.00        0.15
 PAS        0.25        7.32        0.00        0.14
-SAS        0.08        4.05        0.00        0.15
+SAS        0.08        6        0.00        0.15
 ;
 Parameters
 r         discount rate
