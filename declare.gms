@@ -166,7 +166,6 @@ bio_lim_Q(second_in, en_out, type, reg, t)
 *eng_g_lim_Q( trsp_fuel,engine_type,car_truck_ships,reg, t)
 *eng_g_lim_Q2( trsp_fuel,engine_type,car_truck_ships,reg, t)
 eng_g_lim_Q4(  engine_type,trsp_mode,reg, t)
-Q_car_balance(trsp_mode,reg,t)
 supp_lim_Q(fuels,reg, t)
 
 emission_Q(reg,t)

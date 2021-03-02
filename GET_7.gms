@@ -385,9 +385,6 @@ eng_g_lim_Q4(engine_type,car_truck_ships,reg, t+1)..
  sum(trsp_fuel, engines(trsp_fuel, engine_type, car_truck_ships, reg, t+1)) =L=
  sum(trsp_fuel, engines(trsp_fuel, engine_type, car_truck_ships, reg, t)) * (1+eng_g_lim)**t_step+init_eng;
 
-Q_car_balance(car_truck_ships,reg,t)..
-    sum((engine_type,trsp_fuel), engines(trsp_fuel, engine_type, car_truck_ships, reg, t)) =l= num_veh(car_truck_ships,reg,t);
-
 cap_g_lim_Q(en_in, en_out, type,reg, t+1)..
     cap_invest(en_in, en_out, type,reg, t+1) =L=
     cap_invest(en_in, en_out, type, reg,t) * (1+cap_g_lim)**t_step+init_plant;

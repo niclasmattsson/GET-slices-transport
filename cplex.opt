@@ -1,6 +1,6 @@
 lpmethod 4
 threads 6
-*solutiontype 2
+solutiontype 2
 
 *datacheck 2
 *warninglimit 1000
