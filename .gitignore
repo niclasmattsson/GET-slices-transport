@@ -1,4 +1,7 @@
-225a/
+225*/
 *.lst
 *.gdx
+*.log
+*.lxi
+*.gpr
 results.xlsx
