@@ -116,30 +116,27 @@ transp_q(trsp_fuel,reg,t)..
          sum( (trsp_mode, engine_type), trsp_energy(trsp_fuel, engine_type, trsp_mode, reg,t) )=e=
          sum(type, en_conv(trsp_fuel, "trsp", type, reg,t)*effic(trsp_fuel, "trsp", type,reg,t));
 
-useful_trsp_energy_Q(trsp_fuel, engine_type, trsp_mode, reg, t)..
-    trsp_useful_energy(trsp_fuel, engine_type, trsp_mode, reg, t) =E=
-        trsp_energy(trsp_fuel, engine_type, trsp_mode, reg, t) *
-            trsp_conv(trsp_fuel, engine_type, trsp_mode);
-
 trsp_demand_Q(trsp_mode, reg,t)..
-    sum((trsp_fuel, engine_type),
-        trsp_useful_energy(trsp_fuel, engine_type, trsp_mode, reg, t)) =E=
-            trsp_demand(trsp_mode, reg, t);
+    trsp_demand(trsp_mode, reg,t) =e= sum( (trsp_fuel, engine_type),
+    trsp_energy(trsp_fuel, engine_type, trsp_mode,reg, t)*trsp_conv(trsp_fuel, engine_type, trsp_mode) );
 
 vehicle_lim_Q(trsp_fuel, non_phev, car_truck_ships, reg, t)..
-    trsp_useful_energy(trsp_fuel, non_phev, car_truck_ships, reg,t) =l=
+    trsp_energy(trsp_fuel, non_phev, car_truck_ships, reg,t) *
+        trsp_conv(trsp_fuel, non_phev, car_truck_ships) =l=
     engines(trsp_fuel, non_phev, car_truck_ships, reg, t) *
         trsp_demand(car_truck_ships, reg,t) / num_veh(car_truck_ships,reg, t);
 
 vehicle_lim_PHEV_Q(road_fuel_liquid, engine_type, car_or_truck, reg, t)..
-    trsp_useful_energy(road_fuel_liquid, "PHEV", car_or_truck, reg, t) =e=
+    trsp_energy(road_fuel_liquid, "PHEV", car_or_truck, reg, t) *
+        trsp_conv(road_fuel_liquid, "PHEV", car_or_truck) =e=
     engines(road_fuel_liquid, "PHEV", car_or_truck, reg, t) * (1-elec_frac_PHEV(car_or_truck)) *
         trsp_demand(car_or_truck,reg, t) / num_veh(car_or_truck,reg, t);
 
 elec_frac_PHEV_Q(car_or_truck, engine_type, reg, t)..
-    trsp_useful_energy("elec", "PHEV", car_or_truck, reg, t) =e=
-    elec_frac_PHEV(car_or_truck) *
-        sum(road_fuel, trsp_useful_energy(road_fuel, "PHEV", car_or_truck, reg, t));
+    trsp_energy("elec", "PHEV", car_or_truck, reg, t) *
+        trsp_conv("elec", "PHEV", car_or_truck) =e= elec_frac_PHEV(car_or_truck) *
+    sum(road_fuel, trsp_energy(road_fuel, "PHEV", car_or_truck, reg, t) *
+        trsp_conv(road_fuel, "PHEV", car_or_truck));
 
 lim_elec_veh(car_or_truck,elec_veh,reg,t)..
          sum(trsp_fuel, engines(trsp_fuel, elec_veh, car_or_truck, reg,t))=l=
